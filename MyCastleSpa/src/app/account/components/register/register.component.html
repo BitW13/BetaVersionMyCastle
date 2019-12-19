@@ -1,0 +1,41 @@
+<div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+
+      <form *ngIf="!success" #f="ngForm" (ngSubmit)="onSubmit()">
+
+        <h1 class="h3 mb-3 font-weight-normal">Регистрация</h1>
+        
+        <div class="form-group">
+          <label for="name" class="sr-only">Ваше имя</label>
+          <input type="text" id="name" name="name" [(ngModel)]="user.name" class="form-control" placeholder="Ваше имя - это ваша гордость" required autoFocus>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="sr-only">Ваш почтовый адрес</label>
+          <input type="email" id="email" name="email" #email="ngModel" [(ngModel)]="user.email" class="form-control" placeholder="example@email.com" email required>
+          <small [hidden]="email.valid || (email.pristine && !submitted)" class="text-danger">Please enter a valid email</small>
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="sr-only">Ваш пароль</label>
+          <input type="password" id="password" name="password" [(ngModel)]="user.password" class="form-control" placeholder="Password" aria-describedby="passwordHelp" required>     
+          <small id="passwordHelp" class="form-text text-muted">Мин. 6 знаком, включая буквы, цифры и спецсимволы.</small>
+        </div>   
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="!f.form.valid">Получить аккаунт!</button>
+
+        <ngx-spinner></ngx-spinner> 
+
+        <div *ngIf="error" class="alert alert-danger mt-3" role="alert">
+            <strong>Оооопс! Возникли следующие проблемы - </strong> {{error}}
+        </div> 
+
+      </form>  
+
+      <div *ngIf="success" class="alert alert-success" role="alert">
+          <h4 class="alert-heading">Отлично!</h4>
+          <p>Ваш аккаунт был успешно создан, <button mat-button (click)='login()'>пожалуйста, войдите</button> для продолжения.</p>        
+      </div> 
+
+    </div> 
+</div>

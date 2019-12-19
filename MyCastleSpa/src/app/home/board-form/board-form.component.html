@@ -1,0 +1,39 @@
+<h1 mat-dialog-title>Добавить новую рабочую область</h1>
+<div mat-dialog-content>
+  <form [formGroup]='validationForm'>
+    <p>Пожалуйста, заполните все поля</p>
+
+    <p>
+      <mat-form-field>
+        <input matInput placeholder="Название"
+        formControlName="name" required>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input matInput placeholder="Ссылка на картинку"
+        formControlName="imagePath" required>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field>
+        <input matInput placeholder="Цвет" type='color'
+        formControlName="color" required>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-slide-toggle formControlName="isFavorite">
+        Добавить в избранное
+      </mat-slide-toggle>
+    </p>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)='save()' [disabled]="validationForm.invalid">Сохранить</button>
+  <button mat-button (click)="cancel()">Отменить</button>
+</div>
+

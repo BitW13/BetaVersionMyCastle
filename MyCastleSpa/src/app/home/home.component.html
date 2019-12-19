@@ -1,0 +1,34 @@
+<mat-tab-group mat-stretch-tabs>   
+    <mat-tab label='Отмеченное'>
+      <div class='container-fluid'>
+        <div class='row'>
+          <div *ngFor='let card of cards'>
+            <app-board-item [(card)]='card' *ngIf="card.board.isFavorite" (deleteBoard)='deleteBoard($event)' (editBoard)='editBoard($event)'></app-board-item>
+          </div>
+        </div>
+      </div>
+    </mat-tab > 
+
+    <mat-tab label="Личные">
+      <div class='row'>    
+        <div *ngFor='let card of cards'>    
+          <app-board-item [(card)]='card' *ngIf="card.users.length == 1" (editBoard)='editBoard($event)' (deleteBoard)='deleteBoard($event)'></app-board-item>
+        </div>
+      </div>
+    </mat-tab > 
+
+    <mat-tab label="Групповые">
+      <div class='row'>
+        <div *ngFor='let card of cards'>
+          <app-board-item [(card)]='card' *ngIf="card.users.length > 1" (editBoard)='editBoard($event)' (deleteBoard)='deleteBoard($event)'></app-board-item> 
+        </div>
+      </div>
+    </mat-tab>     
+</mat-tab-group>
+
+
+<button mat-fab id='follow' mat-raised-button (click)="addBoard()">
+  <mat-icon>add_to_queue</mat-icon>
+</button>
+<ngx-spinner></ngx-spinner>
+

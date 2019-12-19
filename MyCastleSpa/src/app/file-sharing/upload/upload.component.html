@@ -1,0 +1,11 @@
+<div class="container">
+    <p>Upload File</p>
+    <mat-form-field>
+        <textarea matInput placeholder="Description" [(ngModel)]='file.description' [ngModelOptions]="{standalone: true}" [(value)]='file.description'></textarea>
+    </mat-form-field>
+
+    <button [disabled]="disabled" [ngClass]="{'disabled': disabled}" mat-stroked-button class="button upload" (click)="inputFile.click()">
+        UPLOAD
+    </button>
+    <input name="file" id="file"(change)="upload($event)" type="file" #inputFile hidden>
+</div>

@@ -1,0 +1,27 @@
+<app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)"></app-upload>
+<h2>File List</h2>
+<p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
+<label class="error" [hidden]="!showDownloadError">download error.</label>
+<label class="error" [hidden]="!showUploadError">upload error</label>
+<hr>
+<div class="container">
+  <ul>
+    <li *ngFor="let file of files">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{file.name}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-subtitle>{{file.downloadDate}}</mat-card-subtitle>
+            <mat-card-content>
+                <p>{{file.description}}</p>
+            </mat-card-content>
+            <mat-card-actions>
+                <a>        
+                    <app-download [disabled]="showProgress" [fileName]="file" (downloadStatus)="downloadStatus($event)" mat-button></app-download>
+                </a>
+            </mat-card-actions>   
+        </mat-card>
+             
+    </li>
+  </ul>
+</div>

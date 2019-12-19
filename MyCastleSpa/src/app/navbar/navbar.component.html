@@ -1,0 +1,45 @@
+<header>
+  <mat-toolbar color="primary"> 
+
+    <mat-toolbar-row>
+      <!-- <img class='logo' src='../assets/icon3.ico'> -->
+      <span>My Castle - place, you start</span>
+      <div *ngIf="!isAuthenticated">
+        <button mat-button routerLink="/">
+          <mat-icon>account_balance</mat-icon>
+          Стартовая страница
+        </button>
+        <button mat-button routerLink="/register">
+          <mat-icon>assignment_turned_in</mat-icon>
+          Регистрация
+        </button> 
+        <button mat-button (click)='login()'>
+          <mat-icon>account_box</mat-icon>
+          Войти
+        </button>
+      </div>
+
+      <div *ngIf="isAuthenticated">
+        <button mat-button routerLink="/home">
+          <mat-icon>home</mat-icon>
+          Домашняя страница
+        </button>
+        <button mat-button (click)='openAccount()'>
+          <mat-icon>account_box</mat-icon>
+          {{name}}
+        </button> 
+        <button mat-button (click)="signout()">
+          <mat-icon>meeting_room</mat-icon>
+          Выйти
+        </button>
+      </div>
+
+    </mat-toolbar-row>
+
+    <!-- <mat-toolbar-row *ngIf="isAuthenticated">
+      <span>Второй слой</span>
+    </mat-toolbar-row> -->
+  
+  </mat-toolbar>
+</header>
+<ngx-spinner></ngx-spinner>
