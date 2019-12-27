@@ -67,5 +67,21 @@ namespace FileSharingService.WebApi.Controllers
 
             return Ok(model);
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if(id < 0)
+            {
+                return BadRequest();
+            }
+
+            if (!db.Files.Delete(id))
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }

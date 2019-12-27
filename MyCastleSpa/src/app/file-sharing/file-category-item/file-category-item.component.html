@@ -1,0 +1,24 @@
+<mat-accordion>
+
+    <mat-expansion-panel>
+        <mat-expansion-panel-header>
+        <mat-panel-title>
+            {{category.name}}
+        </mat-panel-title>
+        <mat-panel-description>
+            
+        </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-form-field>
+            <input matInput placeholder="Название" [(ngModel)]='category.name' [ngModelOptions]="{standalone: true}">
+        </mat-form-field>
+
+        <div>
+            <button color="primary" (click)='save()' mat-button>Сохранить</button>
+            <button color="accent" (click)='cancel()' mat-button>Отменить</button>
+            <button color="warn" (click)='delete()' mat-button>Удалить</button>
+        </div>
+    </mat-expansion-panel>
+
+</mat-accordion>

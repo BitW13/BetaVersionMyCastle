@@ -48,6 +48,11 @@ namespace FileSharingService.WebApi.Controllers
                 return BadRequest();
             }
 
+            if(model.Name == null)
+            {
+                model.Name = "Категория";
+            }
+
             FileCategory category = db.FileCategories.Create(model);
 
             if (category == null)

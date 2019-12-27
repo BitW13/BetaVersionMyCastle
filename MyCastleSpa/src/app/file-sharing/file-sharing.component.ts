@@ -3,6 +3,10 @@ import { ProgressStatusEnum, ProgressStatus } from 'src/app/file-sharing/models/
 import { UploadDownloadService } from './services/upload-download.service';
 import { FileCard } from './models/fileCard';
 import { FileService } from './services/file.service';
+import { FileCategoryService } from './services/file-category.service';
+import { FileCategory } from './models/fileCategory';
+import { FileAccess } from './models/fileAccess';
+import { FileAccessService } from './services/file-access.service';
 
 @Component({
   selector: 'app-file-sharing',
@@ -12,16 +16,44 @@ import { FileService } from './services/file.service';
 export class FileSharingComponent implements OnInit {
 
   public files: FileCard[];
+  categories: FileCategory[];
+  fileAccesses: FileAccess[];
   public fileInDownload: string;
   public percentage: number;
   public showProgress: boolean;
   public showDownloadError: boolean;
   public showUploadError: boolean;
+
+  isCreateFile: boolean = false;
  
-  constructor(private service: UploadDownloadService, private fileService: FileService) { }
+  constructor(private service: UploadDownloadService, 
+              private fileService: FileService, 
+              private categoryService: FileCategoryService,
+              private accessService: FileAccessService) { }
 
   ngOnInit() {
+    this.loadItems();
+    console.log(this.fileAccesses);
+    console.log(this.categories);
+    console.log(this.files);
+  }
+
+  loadItems() {
     this.getFiles();
+    this.getCategories();
+    this.getFileAccesses();
+  }
+
+  getCategories() {    
+    this.categoryService.getItems().subscribe(data => this.categories = data);
+  }
+
+  getFileAccesses() {
+    this.accessService.getItems().subscribe(data => this.fileAccesses = data);
+  }
+
+  addCategory() {
+    this.categoryService.post(new FileCategory()).subscribe((data) => this.categories.push(data));
   }
 
   private getFiles() {
@@ -30,6 +62,16 @@ export class FileSharingComponent implements OnInit {
         this.files = data;
       }
     );
+  }
+
+  switchingIsCreateItem(){
+    this.isCreateFile = !this.isCreateFile;
+  }
+
+  addFile() {
+    this.switchingIsCreateItem();
+
+    // this.fileService.post(new File()).subscribe(data => this.cards.unshift(data));
   }
 
   public downloadStatus(event: ProgressStatus) {

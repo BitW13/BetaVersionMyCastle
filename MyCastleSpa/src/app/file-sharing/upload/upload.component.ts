@@ -4,6 +4,9 @@ import { ProgressStatus, ProgressStatusEnum } from 'src/app/file-sharing/models/
 import { HttpEventType } from '@angular/common/http';
 import { FileService } from '../services/file.service';
 import { File } from '../models/file';
+import { FileCard } from '../models/fileCard';
+import { FileCategory } from '../models/fileCategory';
+import { FileAccess } from '../models/fileAccess';
 
 @Component({
   selector: 'app-upload',
@@ -16,6 +19,11 @@ export class UploadComponent {
   @ViewChild('inputFile', {static: false}) inputFile: ElementRef;
 
   file: File = new File();
+  fileCategory: FileCategory;
+  fileAccess: FileAccess;
+  
+  @Input() categories: FileCategory[];
+  @Input() fileAccesses: FileAccess[];
 
   constructor(private service: UploadDownloadService, private fileService: FileService) {
     this.uploadStatus = new EventEmitter<ProgressStatus>();

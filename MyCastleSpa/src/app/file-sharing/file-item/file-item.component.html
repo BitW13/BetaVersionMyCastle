@@ -1,0 +1,90 @@
+<div *ngIf='!isEditFile; else editTemplate'>
+    <mat-card class="card" style="width: 18rem;">
+        <mat-card-header>
+
+            <div mat-card-avatar class="header" [style.backgroundColor]="card.noteCategory.color"></div>
+
+            <div *ngIf='card.note.noteCategoryId != 0; else defaultCategory'>
+                <mat-card-subtitle><h6>{{card.fileCategory.name}}</h6></mat-card-subtitle>
+            </div>
+
+            <ng-template #defaultCategory>
+                <mat-card-subtitle><h6>Без категории</h6></mat-card-subtitle>
+            </ng-template>  
+
+        </mat-card-header>
+
+        <mat-card-content>
+            <hr/>
+            <h6>{{card.file.name}}</h6>
+            <hr/>
+            <p>
+                {{card.file.description}}
+            </p>
+            <hr/>
+            <label class="text">Дата загрузки:</label>
+            <p class="text">{{card.file.downloadDate | date:'fullDate'}}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+                <a>        
+                    <app-download [disabled]="showProgress" [fileName]="file" (downloadStatus)="downloadStatus($event)" mat-button></app-download>
+                </a>
+                <button color="primary" (click)='edit()' mat-button>Изменить</button>
+                <button color="warn" (click)='delete()' mat-button>Удалить</button>
+        </mat-card-actions>
+
+    </mat-card>
+</div>
+
+<ng-template #editTemplate>
+
+    <mat-card class="card" style="width: 18rem;">
+
+        <mat-card-content>
+
+            <form class="form">
+
+                <mat-form-field>
+                    <mat-label>Категория</mat-label>
+
+                    <mat-select [(ngModel)]='card.note.noteCategoryId' [ngModelOptions]="{standalone: true}" [(value)]='card.note.noteCategoryId'>
+                        <mat-option value='0'>
+                            Без категории
+                        </mat-option>
+                        <mat-option *ngFor='let category of categories' value='{{category.id}}' >
+                            {{category.name}}
+                        </mat-option>
+                    </mat-select>
+
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+
+                    <input matInput placeholder="Название" 
+                    [(ngModel)]='card.note.name'
+                    [ngModelOptions]="{standalone: true}">
+
+                    <button mat-button *ngIf="card.note.name" matSuffix mat-icon-button aria-label="Clear" (click)="noteCard.note.name=''">
+                        <mat-icon>close</mat-icon>
+                    </button>
+
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                    <textarea wrap="soft" matInput placeholder="Описание" 
+                    [(ngModel)]='card.note.text'
+                    [ngModelOptions]="{standalone: true}"></textarea>
+                </mat-form-field>
+                
+            </form>
+        </mat-card-content>
+
+        <mat-card-actions>
+                <button color="primary" (click)='save()' mat-button>Сохранить</button>
+                <button color="accent" (click)='cancel()' mat-button>Отменить</button>
+        </mat-card-actions>
+
+    </mat-card>
+
+</ng-template>

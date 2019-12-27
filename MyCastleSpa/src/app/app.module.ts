@@ -22,6 +22,9 @@ import { AccountService } from './navbar/services/account.service';
 import { FileSharingComponent } from './file-sharing/file-sharing.component';
 import { UploadComponent } from './file-sharing/upload/upload.component';
 import { DownloadComponent } from './file-sharing/download/download.component';
+import { FileItemComponent } from './file-sharing/file-item/file-item.component';
+import { FileCategoryItemComponent } from './file-sharing/file-category-item/file-category-item.component';
+import { FileAccessItemComponent } from './file-sharing/file-access-item/file-access-item.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { DownloadComponent } from './file-sharing/download/download.component';
     AccountComponent,
     FileSharingComponent,
     UploadComponent,
-    DownloadComponent
+    DownloadComponent,
+    FileItemComponent,
+    FileCategoryItemComponent,
+    FileAccessItemComponent
   ],
   imports: [
     BrowserModule,

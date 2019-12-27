@@ -1,27 +1,38 @@
-<app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)"></app-upload>
-<h2>File List</h2>
-<p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
-<label class="error" [hidden]="!showDownloadError">download error.</label>
-<label class="error" [hidden]="!showUploadError">upload error</label>
-<hr>
-<div class="container">
-  <ul>
-    <li *ngFor="let file of files">
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>{{file.name}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-subtitle>{{file.downloadDate}}</mat-card-subtitle>
-            <mat-card-content>
-                <p>{{file.description}}</p>
-            </mat-card-content>
-            <mat-card-actions>
-                <a>        
-                    <app-download [disabled]="showProgress" [fileName]="file" (downloadStatus)="downloadStatus($event)" mat-button></app-download>
-                </a>
-            </mat-card-actions>   
-        </mat-card>
-             
-    </li>
-  </ul>
-</div>
+<mat-drawer-container> 
+        
+    <mat-drawer #drawer class="sidenav col-3" mode="side">
+        <div>
+            <mat-card>
+                <button color="primary" (click)='addCategory()' mat-button>Новая категория</button>
+                <mat-slide-toggle>Когда-нибудь...</mat-slide-toggle>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+        <div *ngFor='let category of categories'>
+            <app-file-category-item [(category)]='category' (loadItems)='loadItems()' (deleteCategory)='deleteCategory($event)'></app-file-category-item>
+        </div>
+    </mat-drawer>
+    
+    <mat-drawer-content>
+        <div class='container-fluid'>
+            <mat-toolbar class="container-menu">
+                <button class="content-button" mat-button (click)="drawer.toggle()">Фильтры</button>
+                <button class="content-button" color="primary" mat-button color="primary" (click)='addFile()'>Добавить файл</button>
+            </mat-toolbar>
+            <div class='row'>
+
+                <div *ngIf="isCreateFile">
+                    <app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)" (categories)="categories" (fileAccesses)="fileAccesses"></app-upload>                    
+                    <p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
+                    <label class="error" [hidden]="!showDownloadError">download error.</label>
+                    <label class="error" [hidden]="!showUploadError">upload error</label>
+                </div>   
+                <h2>File List</h2>     
+                <hr>
+                <div class='col-auto' *ngFor='let card of cards'>
+                    <app-file-item [(card)]='card' [(categories)]='categories' (deleteNote)='deleteFile($event)'></app-file-item>
+                </div>
+            </div>
+        </div>
+    </mat-drawer-content>
+</mat-drawer-container>

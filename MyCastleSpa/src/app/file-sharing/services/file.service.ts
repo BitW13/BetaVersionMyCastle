@@ -9,7 +9,7 @@ import {File } from '../models/file';
 })
 export class FileService {
 
-  private url = 'http://localhost:51403/api/file';
+  private url = 'http://localhost:51403/api/file/';
   constructor(private http: HttpClient) { }
 
   getCards(): Observable<FileCard[]> {
@@ -26,5 +26,9 @@ export class FileService {
 
   delete(item: File) {
     this.http.delete(this.url + item.id);
+  }
+
+  put(item: File): Observable<FileCard> {
+    return this.http.put<FileCard>(this.url + item.id, item);
   }
 }
