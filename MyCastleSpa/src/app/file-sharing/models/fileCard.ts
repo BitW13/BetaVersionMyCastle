@@ -11,6 +11,5 @@ export class FileCard {
 
     public fileCategory: FileCategory;
 
-    public fileUrl: FileUrl;
-
+    public fileUrl: FileUrl; 
 }

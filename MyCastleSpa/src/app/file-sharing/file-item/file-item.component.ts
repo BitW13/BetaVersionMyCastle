@@ -3,6 +3,7 @@ import { FileService } from '../services/file.service';
 import { FileCategory } from '../models/fileCategory';
 import { FileCard } from '../models/fileCard';
 import { File } from '../models/file';
+import { FileAccess } from '../models/fileAccess';
 
 @Component({
   selector: 'app-file-item',
@@ -11,9 +12,12 @@ import { File } from '../models/file';
   providers:[FileService]
 })
 export class FileItemComponent implements OnInit {
+
   @Input() card: FileCard;
 
   @Input() categories: FileCategory[];
+
+  @Input() fileAccesses: FileAccess[];
 
   @Output() deleteFile = new EventEmitter<FileCard>();
 
@@ -21,7 +25,7 @@ export class FileItemComponent implements OnInit {
 
   saveItemValue: File;
 
-  constructor(private fileService: FileService) { }
+  constructor(private fileService: FileService) {}
 
   ngOnInit() {
   }
@@ -69,7 +73,6 @@ export class FileItemComponent implements OnInit {
     copy.downloadDate = item.downloadDate;
     copy.categoryId = item.categoryId;
     copy.fileAccessId = item.fileAccessId;
-    copy.fileUrlId = item.fileUrlId;
     copy.size = item.size;
 
     return copy;

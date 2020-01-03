@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { FileCard } from '../models/fileCard';
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +19,32 @@ export class UploadDownloadService {
     this.apiFileUrl = this.baseApiUrl + 'files';
    }
 
-   public downloadFile(file: string): Observable<HttpEvent<Blob>> {
-     return this.httpClient.request(new HttpRequest(
-       'GET',
-       `${this.apiDownloadUrl}?file=${file}`,
-       null,
-       {
-         reportProgress: true,
-         responseType: 'blob'
-       }));
-   }
+  public downloadFile(file: string): Observable<HttpEvent<Blob>> {
+    return this.httpClient.request(new HttpRequest(
+      'GET',
+      `${this.apiDownloadUrl}?file=${file}`,
+      null,
+      {
+        reportProgress: true,
+        responseType: 'blob'
+      }));
+  }
 
-   public uploadFile(file: Blob): Observable<HttpEvent<void>>{
-     const formData = new FormData();
-     formData.append('file', file);
+  public uploadFile(file: Blob, fileData: FileCard): Observable<HttpEvent<void>>{
+    
+    const formData = new FormData();    
+    formData.append('file', file);
+    formData.append('description', fileData.file.description);
+    formData.append('categoryId', fileData.fileCategory.id as any as string);
+    formData.append('accessId', fileData.fileAccess.id as any as string);
 
-     return this.httpClient.request(new HttpRequest(
-       'POST',
-       this.apiUploadUrl,
-       formData,
-       {
-         reportProgress: true
-       }));
+    return this.httpClient.request(new HttpRequest(
+      'POST',
+      this.apiUploadUrl,
+      formData,
+      {
+        reportProgress: true
+      }));
    }
 
    public getFiles(): Observable<string[]> {

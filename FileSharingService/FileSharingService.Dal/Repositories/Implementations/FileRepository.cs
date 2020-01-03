@@ -133,7 +133,7 @@ namespace FileSharingService.Dal.Repositories.Implementations
                     Description = row["Description"].ToString(),
                     CategoryId = Convert.ToInt32(row["CategoryId"]),
                     FileUrlId = Convert.ToInt32(row["FileUrlId"]),
-                    DownloadDate = Convert.ToDateTime(row["Date"]),
+                    DownloadDate = Convert.ToDateTime(row["DownloadDate"]),
                     FileAccessId = Convert.ToInt32(row["FileAccessId"]),
                     UserId = Convert.ToInt32(row["UserId"])
                 };

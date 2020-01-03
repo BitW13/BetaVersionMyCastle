@@ -1,8 +1,12 @@
 ﻿using Common.Entity.FileService;
 using FileSharingService.Bll.BusinessLogic;
+using FileSharingService.WebApi.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace FileSharingService.WebApi.Controllers
 {
@@ -11,10 +15,12 @@ namespace FileSharingService.WebApi.Controllers
     public class FileController : ControllerBase
     {
         private readonly IBusinessLogic db;
+        private readonly IHostingEnvironment hostingEnvironment;
 
-        public FileController(IBusinessLogic db)
+        public FileController(IHostingEnvironment hostingEnvironment, IBusinessLogic db)
         {
             this.db = db;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         [HttpGet]
@@ -42,21 +48,24 @@ namespace FileSharingService.WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] File model)
+        public IActionResult Post([FromBody] FileCard model)
         {
             if (model == null)
             {
                 return BadRequest();
             }
-            model.DownloadDate = DateTime.Now;
 
-            FileCard file = db.Files.Create(model);
+            model.File.DownloadDate = DateTime.Now;
+            model.File.FileAccessId = model.FileAccess.Id;
+            model.File.CategoryId = model.FileCategory.Id;
+
+            FileCard file = db.Files.Create(model.File);
 
             return Ok(file);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] File model)
+        public IActionResult Put(int id, [FromBody] Common.Entity.FileService.File model)
         {
             if (model == null || id != model.Id)
             {
@@ -74,6 +83,22 @@ namespace FileSharingService.WebApi.Controllers
             if(id < 0)
             {
                 return BadRequest();
+            }
+
+            var uploads = Path.Combine(hostingEnvironment.ContentRootPath, "uploads");
+
+            if (!Directory.Exists(uploads))
+            {
+                return NotFound();
+            }
+
+            var file = db.Files.GetItemById(id);
+
+            var filePath = Path.Combine(uploads, file.Name);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
             }
 
             if (!db.Files.Delete(id))

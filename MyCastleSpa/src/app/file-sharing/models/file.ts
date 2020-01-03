@@ -13,6 +13,4 @@ export class File {
     public categoryId: number;
 
     public fileAccessId: number;
-
-    public fileUrlId: number;
 }

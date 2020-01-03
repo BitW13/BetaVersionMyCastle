@@ -1,16 +1,17 @@
 <div *ngIf='!isEditFile; else editTemplate'>
     <mat-card class="card" style="width: 18rem;">
         <mat-card-header>
-
-            <div mat-card-avatar class="header" [style.backgroundColor]="card.noteCategory.color"></div>
-
-            <div *ngIf='card.note.noteCategoryId != 0; else defaultCategory'>
+            <div *ngIf='card.file.categoryId != 0; else defaultCategory'>
                 <mat-card-subtitle><h6>{{card.fileCategory.name}}</h6></mat-card-subtitle>
             </div>
 
             <ng-template #defaultCategory>
                 <mat-card-subtitle><h6>Без категории</h6></mat-card-subtitle>
-            </ng-template>  
+            </ng-template> 
+            <hr>
+            <div *ngIf='card.file.fileAccessId != 0'>
+                <mat-card-subtitle><h6>{{card.fileAccess.name}}</h6></mat-card-subtitle>
+            </div>
 
         </mat-card-header>
 
@@ -28,7 +29,7 @@
 
         <mat-card-actions>
                 <a>        
-                    <app-download [disabled]="showProgress" [fileName]="file" (downloadStatus)="downloadStatus($event)" mat-button></app-download>
+                    <app-download [disabled]="showProgress" [fileName]="card.file.name" (downloadStatus)="downloadStatus($event)" mat-button></app-download>
                 </a>
                 <button color="primary" (click)='edit()' mat-button>Изменить</button>
                 <button color="warn" (click)='delete()' mat-button>Удалить</button>
@@ -48,7 +49,7 @@
                 <mat-form-field>
                     <mat-label>Категория</mat-label>
 
-                    <mat-select [(ngModel)]='card.note.noteCategoryId' [ngModelOptions]="{standalone: true}" [(value)]='card.note.noteCategoryId'>
+                    <mat-select [(ngModel)]='card.file.categoryId' [ngModelOptions]="{standalone: true}" [(value)]='card.file.categoryId'>
                         <mat-option value='0'>
                             Без категории
                         </mat-option>
@@ -59,13 +60,23 @@
 
                 </mat-form-field>
 
+                <mat-form-field>
+                    <mat-label>Доступ</mat-label>
+
+                    <mat-select [(ngModel)]="card.file.fileAccessId" [ngModelOptions]="{standalone: true}" [(value)]="card.file.fileAccessId">
+                        <mat-option *ngFor='let access of fileAccesses' value='{{access.id}}' >
+                            {{access.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
                 <mat-form-field class="full-width">
 
                     <input matInput placeholder="Название" 
-                    [(ngModel)]='card.note.name'
+                    [(ngModel)]='card.file.name'
                     [ngModelOptions]="{standalone: true}">
 
-                    <button mat-button *ngIf="card.note.name" matSuffix mat-icon-button aria-label="Clear" (click)="noteCard.note.name=''">
+                    <button mat-button *ngIf="card.file.name" matSuffix mat-icon-button aria-label="Clear" (click)="card.file.name=''">
                         <mat-icon>close</mat-icon>
                     </button>
 
@@ -73,7 +84,7 @@
 
                 <mat-form-field class="full-width">
                     <textarea wrap="soft" matInput placeholder="Описание" 
-                    [(ngModel)]='card.note.text'
+                    [(ngModel)]='card.file.description'
                     [ngModelOptions]="{standalone: true}"></textarea>
                 </mat-form-field>
                 

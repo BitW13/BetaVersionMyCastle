@@ -1,4 +1,4 @@
-import { Component, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
+import { Component, Input, Output, ViewChild, ElementRef, EventEmitter, OnInit } from '@angular/core';
 import { UploadDownloadService } from '../services/upload-download.service';
 import { ProgressStatus, ProgressStatusEnum } from 'src/app/file-sharing/models/progress-status.model';
 import { HttpEventType } from '@angular/common/http';
@@ -13,30 +13,36 @@ import { FileAccess } from '../models/fileAccess';
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
-export class UploadComponent {
+export class UploadComponent implements OnInit {
+
+  ngOnInit() {
+    this.uploadStatus = new EventEmitter<ProgressStatus>();
+    this.fileCard = new FileCard();
+    this.fileCard.file = new File();
+    this.fileCard.fileAccess = new FileAccess();
+    this.fileCard.fileCategory = new FileCategory();
+  }
+  @Output() loadItems = new EventEmitter();
+
   @Input() public disabled: boolean;
-  @Output() public uploadStatus: EventEmitter<ProgressStatus>;
+  @Output() public uploadStatus: EventEmitter<ProgressStatus> = new EventEmitter<ProgressStatus>();
   @ViewChild('inputFile', {static: false}) inputFile: ElementRef;
 
-  file: File = new File();
-  fileCategory: FileCategory;
-  fileAccess: FileAccess;
+  fileCard: FileCard;
   
   @Input() categories: FileCategory[];
   @Input() fileAccesses: FileAccess[];
 
   constructor(private service: UploadDownloadService, private fileService: FileService) {
-    this.uploadStatus = new EventEmitter<ProgressStatus>();
    }
 
    public upload(event) {
      if(event.target.files && event.target.files.length > 0){
        const file = event.target.files[0];
        this.uploadStatus.emit({status: ProgressStatusEnum.START });
-       this.file.name = file.name;
-       this.file.size = file.size;
-       this.fileService.post(this.file).subscribe(data => {});
-       this.service.uploadFile(file).subscribe(
+       this.fileCard.file.name = file.name;
+       this.fileCard.file.size = file.size;
+       this.service.uploadFile(file, this.fileCard).subscribe(
          data => {
            if(data) {
              switch (data.type) {
@@ -49,6 +55,7 @@ export class UploadComponent {
                   break;
              }
            }
+           this.loadItems.emit();
          },
          error => {
            this.inputFile.nativeElement.value = '';

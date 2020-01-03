@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { FileCard } from '../models/fileCard';
@@ -20,12 +20,12 @@ export class FileService {
     return this.http.get<FileCard>(this.url + item.file.id);
   }
 
-  post(item: File): Observable<FileCard> {
+  post(item: FileCard): Observable<FileCard> {
     return this.http.post<FileCard>(this.url, item);
   }
 
-  delete(item: File) {
-    this.http.delete(this.url + item.id);
+  delete(item: File): Observable<File> {
+    return this.http.delete<File>(this.url + item.id);
   }
 
   put(item: File): Observable<FileCard> {

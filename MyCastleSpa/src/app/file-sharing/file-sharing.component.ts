@@ -26,16 +26,12 @@ export class FileSharingComponent implements OnInit {
 
   isCreateFile: boolean = false;
  
-  constructor(private service: UploadDownloadService, 
-              private fileService: FileService, 
+  constructor(private fileService: FileService, 
               private categoryService: FileCategoryService,
               private accessService: FileAccessService) { }
 
   ngOnInit() {
     this.loadItems();
-    console.log(this.fileAccesses);
-    console.log(this.categories);
-    console.log(this.files);
   }
 
   loadItems() {
@@ -57,11 +53,7 @@ export class FileSharingComponent implements OnInit {
   }
 
   private getFiles() {
-    this.fileService.getCards().subscribe(
-      data => {
-        this.files = data;
-      }
-    );
+    this.fileService.getCards().subscribe(data => { this.files = data; console.log(data); });
   }
 
   switchingIsCreateItem(){
@@ -72,6 +64,12 @@ export class FileSharingComponent implements OnInit {
     this.switchingIsCreateItem();
 
     // this.fileService.post(new File()).subscribe(data => this.cards.unshift(data));
+  }
+  
+  deleteFile(item: FileCard) {
+    this.fileService.delete(item.file).subscribe(data => {
+      this.getFiles();
+    });
   }
 
   public downloadStatus(event: ProgressStatus) {

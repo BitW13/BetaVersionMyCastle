@@ -19,18 +19,18 @@
                 <button class="content-button" mat-button (click)="drawer.toggle()">Фильтры</button>
                 <button class="content-button" color="primary" mat-button color="primary" (click)='addFile()'>Добавить файл</button>
             </mat-toolbar>
+            <h2>File List</h2>  
             <div class='row'>
 
                 <div *ngIf="isCreateFile">
-                    <app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)" (categories)="categories" (fileAccesses)="fileAccesses"></app-upload>                    
+                    <app-upload [disabled]="showProgress" (uploadStatus)="uploadStatus($event)" [(categories)]="categories" [(fileAccesses)]="fileAccesses" (loadItems)='loadItems()'></app-upload>                    
                     <p *ngIf="showProgress"> progress <strong>{{percentage}}%</strong></p>
                     <label class="error" [hidden]="!showDownloadError">download error.</label>
                     <label class="error" [hidden]="!showUploadError">upload error</label>
                 </div>   
-                <h2>File List</h2>     
                 <hr>
-                <div class='col-auto' *ngFor='let card of cards'>
-                    <app-file-item [(card)]='card' [(categories)]='categories' (deleteNote)='deleteFile($event)'></app-file-item>
+                <div class='col-auto' *ngFor='let card of files'>
+                    <app-file-item [(card)]='card' [(categories)]='categories' [(fileAccesses)]='fileAccesses' (deleteFile)='deleteFile($event)'></app-file-item>
                 </div>
             </div>
         </div>
