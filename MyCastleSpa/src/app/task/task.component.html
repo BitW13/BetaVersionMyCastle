@@ -1,0 +1,36 @@
+<mat-drawer-container> 
+        
+    <mat-drawer #drawer class="sidenav" mode="side">
+        
+        <div>
+            <mat-card>
+                <button color="primary" (click)='addCategory()' mat-button>Новая категория</button>
+                <mat-slide-toggle>Когда-нибудь...</mat-slide-toggle>
+            </mat-card>
+            <mat-divider></mat-divider>
+        </div>
+        <div *ngFor='let category of categories'>
+            <app-task-category-item [(category)]='category' (getCategories)='getCategories()'></app-task-category-item>
+        </div>
+
+    </mat-drawer>
+    
+    <mat-drawer-content>
+        
+        <button class="content-button" mat-button (click)="drawer.toggle()">Фильтры</button>
+        <button class="content-button" color="primary" mat-button color="primary" (click)='addTask()'>Добавить задачу</button>
+        <mat-accordion>
+            <div>
+                <mat-slide-toggle>Когда-нибудь...</mat-slide-toggle>
+                Итого: Когда-нибудь...
+            </div>
+            <div *ngFor='let card of cards'>
+                <app-task-item
+                [(card)]='card' [(categories)]='categories'
+                (getModels)='getModels()'></app-task-item>
+            </div>                
+        </mat-accordion>
+
+    </mat-drawer-content>
+    
+</mat-drawer-container>

@@ -1,107 +1,94 @@
 ﻿using Common.Entity.TaskPlannerService;
-using Common.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
+using TaskPlannerService.Dal.Contexts;
 using TaskPlannerService.Dal.Repositories.Interfaces;
 
 namespace TaskPlannerService.Dal.Repositories.Implementations
 {
     public class SeverityRepository : ISeverityRepository
     {
-        private readonly IContext db;
+        private readonly TaskPlannerServiceContext db;
 
-        public SeverityRepository(IContext db)
+        public SeverityRepository(TaskPlannerServiceContext db)
         {
             this.db = db;
         }
 
         public void Create(Severity item)
         {
-            var parameters = new List<SqlParameter>
+            if (item != null)
             {
-                db.CreateParameter("@Name", item.Name, DbType.String),
-                db.CreateParameter("@UserId", item.UserId, DbType.Int32)
-            };
+                try
+                {
+                    db.Severities.Add(item);
 
-            try
-            {
-                db.Insert("CreateSeverity", CommandType.StoredProcedure, parameters.ToArray());
+                    db.SaveChanges();
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
             }
-            catch
-            {
-                return;
-            }
+
+            return;
         }
 
         public bool Delete(int id)
         {
-            var parameters = new List<SqlParameter>
-            {
-                db.CreateParameter("@Id", id, DbType.Int32)
-            };
+            Severity item = db.Severities.Find(id);
 
-            try
+            if (item != null)
             {
-                db.Delete("DeleteSeverity", CommandType.StoredProcedure, parameters.ToArray());
-            }
-            catch
-            {
-                return false;
+                try
+                {
+                    db.Severities.Remove(item);
+
+                    db.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
 
-            return true;
+            return false;
         }
 
         public IEnumerable<Severity> GetAll()
         {
-            var severityDataTable = db.GetDataTable("GetSeverities", CommandType.StoredProcedure);
-            return GetSeveritiesFromRows(severityDataTable.Rows);
-        }
-
-        private List<Severity> GetSeveritiesFromRows(DataRowCollection rows)
-        {
-            var severities = new List<Severity>();
-
-            foreach (DataRow row in rows)
-            {
-                var severity = new Severity
-                {
-                    Id = Convert.ToInt32(row["Id"]),
-                    Name = row["Name"].ToString(),
-                    UserId = Convert.ToInt32(row["UserId"])
-                };
-                severities.Add(severity);
-            }
-
-            return severities;
+            return db.Severities;
         }
 
         public Severity GetItemById(int id)
         {
-            var parameters = new List<SqlParameter>
-            {
-                db.CreateParameter("@Id", id, DbType.Int32)
-            };
-
-            var severityDataTable = db.GetDataTable("GetSeverityById", CommandType.StoredProcedure, parameters.ToArray());
-
-            var severities = GetSeveritiesFromRows(severityDataTable.Rows);
-
-            return severities[0];
+            return db.Severities.Find(id);
         }
 
         public void Update(Severity item)
         {
-            var parameters = new List<SqlParameter>
+            if (item != null)
             {
-                db.CreateParameter("@Id", item.Id, DbType.Int32),
-                db.CreateParameter("@Name", item.Name, DbType.String),
-                db.CreateParameter("@UserId", item.UserId, DbType.Int32)
-            };
+                try
+                {
+                    db.Entry(item).State = EntityState.Modified;
 
-            db.Update("UpdateSeverity", CommandType.StoredProcedure, parameters.ToArray());
+                    db.SaveChanges();
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
+            }
+
+            return;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Common.Entity.TaskPlannerService;
 using System.Collections.Generic;
+using System.Linq;
 using TaskPlannerService.Bll.Services.Interfaces;
 using TaskPlannerService.Dal.Repositories.Interfaces;
 
@@ -14,9 +15,13 @@ namespace TaskPlannerService.Bll.Services.Implementations
             this.db = db;
         }
 
-        public void Create(Severity item)
+        public Severity Create(Severity item)
         {
             db.Create(item);
+
+            var items = GetAll().ToList();
+
+            return items[items.Count - 1];
         }
 
         public bool Delete(int id)

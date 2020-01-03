@@ -25,6 +25,10 @@ import { DownloadComponent } from './file-sharing/download/download.component';
 import { FileItemComponent } from './file-sharing/file-item/file-item.component';
 import { FileCategoryItemComponent } from './file-sharing/file-category-item/file-category-item.component';
 import { FileAccessItemComponent } from './file-sharing/file-access-item/file-access-item.component';
+import { TaskComponent } from './task/task.component';
+import { TaskItemComponent } from './task/task-item/task-item.component';
+import { TaskCategoryComponent } from './task/task-category/task-category.component';
+import { TaskSeverityComponent } from './task/task-severity/task-severity.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +44,11 @@ import { FileAccessItemComponent } from './file-sharing/file-access-item/file-ac
     DownloadComponent,
     FileItemComponent,
     FileCategoryItemComponent,
-    FileAccessItemComponent
+    FileAccessItemComponent,
+    TaskComponent,
+    TaskItemComponent,
+    TaskCategoryComponent,
+    TaskSeverityComponent
   ],
   imports: [
     BrowserModule,

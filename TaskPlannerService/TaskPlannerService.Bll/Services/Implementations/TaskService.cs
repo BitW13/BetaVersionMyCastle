@@ -1,5 +1,6 @@
 ﻿using Common.Entity.TaskPlannerService;
 using System.Collections.Generic;
+using System.Linq;
 using TaskPlannerService.Bll.Services.Interfaces;
 using TaskPlannerService.Dal.Repositories.Interfaces;
 
@@ -14,9 +15,13 @@ namespace TaskPlannerService.Bll.Services.Implementations
             this.db = db;
         }
 
-        public void Create(TaskEntity item)
+        public TaskEntity Create(TaskEntity item)
         {
             db.Create(item);
+
+            var items = GetAll().ToList();
+
+            return items[items.Count - 1];
         }
 
         public bool Delete(int id)
@@ -29,14 +34,14 @@ namespace TaskPlannerService.Bll.Services.Implementations
             return db.GetAll();
         }
 
-        public IEnumerable<TaskEntity> GetByTaskCategoryId(int categoryId)
+        public IEnumerable<TaskEntity> GetBySeverityId(int severityId)
         {
-            return db.GetByTaskCategoryId(categoryId);
+            return db.GetBySeverityId(severityId);
         }
 
-        public IEnumerable<TaskEntity> GetBySeverityId(int typeOfPurchaseId)
+        public IEnumerable<TaskEntity> GetByTaskCategoryId(int taskCategoryId)
         {
-            return db.GetBySeverityId(typeOfPurchaseId);
+            return db.GetByTaskCategoryId(taskCategoryId);
         }
 
         public TaskEntity GetItemById(int id)

@@ -21,7 +21,7 @@ namespace FileSharingService.Bll.Services.Implementations
 
             var items = GetAll().ToList();
 
-            return items[0];
+            return items[items.Count -1];
         }
 
         public bool Delete(int id)
