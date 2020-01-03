@@ -17,6 +17,9 @@
           <mat-icon>account_box</mat-icon>
           Войти
         </button>
+        <button mat-button (click)='files()'>
+          Общедоступные файлы
+        </button>
       </div>
 
       <div *ngIf="isAuthenticated">

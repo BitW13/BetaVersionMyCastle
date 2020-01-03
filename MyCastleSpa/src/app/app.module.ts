@@ -45,10 +45,10 @@ import { TaskSeverityComponent } from './task/task-severity/task-severity.compon
     FileItemComponent,
     FileCategoryItemComponent,
     FileAccessItemComponent,
-    TaskComponent,
-    TaskItemComponent,
-    TaskCategoryComponent,
-    TaskSeverityComponent
+    //TaskComponent,
+    //TaskItemComponent,
+    //TaskCategoryComponent,
+    //TaskSeverityComponent
   ],
   imports: [
     BrowserModule,
