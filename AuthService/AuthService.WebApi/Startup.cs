@@ -54,6 +54,10 @@ namespace AuthService.WebApi
                     .AllowAnyHeader()
                     .AllowAnyOrigin()));
 
+
+
+
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
